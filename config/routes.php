@@ -46,6 +46,8 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+    $routes->setExtensions(['json','xml']);
+
     // Register scoped middleware for in scopes.
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
         'httpOnly' => true,
@@ -55,7 +57,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered through `Application::routes()` with `registerMiddleware()`
      */
-    $routes->applyMiddleware('csrf');
+    //$routes->applyMiddleware('csrf');
 
     /*
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -68,6 +70,14 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+
+
+    //apis
+    $routes->connect('/contacts/index', ['controller' => 'Apis', 'action' => 'getContacts']);
+    $routes->connect('/contacts/index_ext', ['controller' => 'Apis', 'action' => 'getContactWithCompany']);
+    $routes->connect('/contacts', ['controller' => 'Apis', 'action' => 'store']);
+
+    
 
     /*
      * Connect catchall routes for all controllers.
